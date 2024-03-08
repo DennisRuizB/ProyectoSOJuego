@@ -1,0 +1,10 @@
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\bin\Debug\ProyectoSO.exe.config
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\bin\Debug\ProyectoSO.exe
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\bin\Debug\ProyectoSO.pdb
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.csproj.AssemblyReference.cache
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.Form1.resources
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.Properties.Resources.resources
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.csproj.GenerateResource.cache
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.csproj.CoreCompileInputs.cache
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.exe
+C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.pdb
