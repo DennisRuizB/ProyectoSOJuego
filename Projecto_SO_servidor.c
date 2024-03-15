@@ -6,7 +6,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-const int BIND = 9073;
+#include <pthread.h>
+const int BIND = 9075;
 MYSQL *connMYSQL(MYSQL *conn)
 {
 	int err;
@@ -29,20 +30,200 @@ MYSQL *connMYSQL(MYSQL *conn)
 		exit (1);
 	}
 }
-char *FechasGanadas()
+void Registrar(char p[512], char respuesta[512],MYSQL *conn){
+	int err = mysql_query(conn,"use BET365");
+	MYSQL_RES *resultado;
+	MYSQL_ROW row;
+	
+	//1:
+	p = strtok(NULL,"/");
+	char nombre[200];
+	strcpy(nombre,p);
+	
+	//2:
+	p = strtok(NULL,"/");
+	int Edad;
+	Edad = atoi(p);
+	
+	//3:
+	p = strtok(NULL,"/");
+	char contrasena[20];
+	strcpy(contrasena,p);
+	
+	char anadir[500];
+	sprintf(anadir,"INSERT INTO Jugadores(Nombre,Edad,Victorias) VALUES ('%s',%d,0);", nombre,Edad);
+	err = mysql_query(conn,anadir);
+	sprintf(anadir,"INSERT INTO Contrasenas(Contrasena) VALUES ('%s');", contrasena);
+	err = mysql_query(conn,anadir);
+	if (err!=0) 
+		strcpy(respuesta, "No");
+	else
+		strcpy(respuesta, "Si");
+}
+void Contrasena(char p[512], char respuesta[512], MYSQL *conn)
 {
+	int err = mysql_query(conn,"use BET365");
+	MYSQL_RES *resultado;
+	MYSQL_ROW row;
+	
+	p = strtok(NULL,"/");
+	char nombre[200];
+	strcpy(nombre,p);
+	
+	
+	char consulta[200];
+	sprintf(consulta,"SELECT Contrasena FROM (Contrasenas,Jugadores) WHERE Jugadores.Id = Contrasenas.ID AND Jugadores.Nombre = '%s';", nombre);
+	err = mysql_query(conn,consulta);
+	resultado = mysql_store_result(conn);
+	row = mysql_fetch_row(resultado);
+	strcpy(respuesta,row[0]);
+}
+
+void ContrasenaCheck(char p[512], char respuesta[512], MYSQL *conn)
+{
+	int err = mysql_query(conn,"use BET365");
+	MYSQL_RES *resultado;
+	MYSQL_ROW row;
+	
+	p = strtok(NULL,"/");
+	char nombre[200];
+	strcpy(nombre,p);
+	
+	p = strtok(NULL,"/");
+	char contrasenaUsu[200];
+	strcpy(contrasenaUsu,p);
+	
+	
+	char consulta[200];
+	sprintf(consulta,"SELECT Contrasena FROM (Contrasenas,Jugadores) WHERE Jugadores.Id = Contrasenas.ID AND Jugadores.Nombre = '%s';", nombre);
+	err = mysql_query(conn,consulta);
+	resultado = mysql_store_result(conn);
+	row = mysql_fetch_row(resultado);
+	if(strcmp(contrasenaUsu, row[0]) == 0)
+		sprintf(respuesta,"Si es el usuario");
+	else
+		sprintf(respuesta,"No es el usuario");
 	
 }
-int main(int argc, char *argv[]) {
+void FechasGanadas(char p[512], char respuesta[512], MYSQL *conn)
+{
+	int err = mysql_query(conn,"use BET365");
+	MYSQL_RES *resultado;
+	MYSQL_ROW row;
+	
+	p = strtok(NULL,"/");
+	char nombre[200];
+	strcpy(nombre,p);
+	
+	
+	
+	err = mysql_query(conn,"SELECT * FROM Partidas");
+	
+	resultado =mysql_store_result(conn);
+	row = mysql_fetch_row(resultado);
+	while(row != NULL)
+	{
+		if(strcmp(row[1], nombre) == 0)
+		{
+			sprintf(respuesta,"%s%s/",respuesta,row[2]);
+		}
+		row = mysql_fetch_row(resultado);
+	}
+}
+void Edad(char p[512], char respuesta[512],MYSQL *conn)
+{
+	int err = mysql_query(conn,"use BET365");
+	MYSQL_RES *resultado;
+	MYSQL_ROW row;
+	
+	p = strtok(NULL,"/");
+	char nombre[200];
+	strcpy(nombre,p);
+	
+	
+	err = mysql_query(conn,"SELECT * FROM Jugadores");
+	resultado = mysql_store_result(conn);
+	row = mysql_fetch_row(resultado);  
+	while(row!=NULL)
+	{
+		if(strcmp( row[1], nombre) == 0)
+		{
+			strcpy(respuesta, row[2]);
+		}
+		row = mysql_fetch_row(resultado);
+	}
+}
+void *AtenderCliente (void*socket)
+{
 	//iniciamos la connexion SQL
-	MYSQL *conn;
-	conn = connMYSQL(conn);
-	//iniciamos el sock del srvidor
-	int sock_conn, sock_listen, ret;
-	struct sockaddr_in serv_adr;
+	MYSQL *conn = connMYSQL(conn);;
 
 	char peticion[512];
 	char respuesta[512];
+	int ret;
+	
+	int sock_conn;
+	int *s;
+	s= (int *) socket;
+	sock_conn = *s;
+	
+	for(int terminar = 0; terminar == 0;)
+	{
+		memset(respuesta, 0, 512);
+		//Servei
+		//leemos la peticion 
+		ret=read(sock_conn,peticion, sizeof(peticion));
+		printf("recibida una peticion\n");
+		peticion[ret]= '\0';
+		
+		//Dividimeos el texto para saber el codigo
+		//1:
+		char *p = strtok(peticion, "/");
+		int codigo = atoi(p);
+		
+		printf("\n Codigo: %d\n",codigo);
+		
+		if (codigo == 0)
+			terminar = 1;
+		//devuelve la edad
+		if(codigo == 1)
+		{
+			Edad(p,respuesta, conn);
+		}
+		//devuele los años ganados
+		else if (codigo == 2)
+		{
+			FechasGanadas(p,respuesta, conn);
+		}
+		//devuelve la contraseña
+		else if (codigo == 3)
+		{
+			Contrasena(p,respuesta,conn);
+		}
+		else if (codigo == 4)
+		{
+			Registrar(p,respuesta,conn);
+		}
+		else if (codigo == 5)
+		{
+			ContrasenaCheck(p,respuesta,conn);
+		}
+		if(codigo != 0)
+		{
+			//envia la peticion de vuelta
+			printf("la respuesta es %s\n",respuesta);
+			write(sock_conn,respuesta,strlen(respuesta));
+		}
+	}
+	close(sock_conn); /* Necessari per a que el client detecti EOF */
+}
+int main(int argc, char *argv[]) {
+	//iniciamos el sock del srvidor
+	int sock_conn, sock_listen;
+	struct sockaddr_in serv_adr;
+	
+	//CONECTAMOS MYSQL	
+	
 	
 	// INICIALITZACIONS
 	// Obrim el socket
@@ -61,136 +242,17 @@ int main(int argc, char *argv[]) {
 	// Limitem el nombre de connexions pendents
 	if (listen(sock_listen, 3) < 0)
 		printf("listen");
-	
-	for(;;){
-
+	int sockets[100];
+	pthread_t thread[100];
+	for(int i = 0; ;i++)
+	{
 		printf("escuchando\n");
 		//esperamos ha escuchar a un cliente
 		sock_conn = accept(sock_listen, NULL, NULL);
-		int terminar = 0;
-		while(terminar == 0)
-		{
-			memset(respuesta, 0, 512);
-			//Servei
-			//leemos la peticion 
-			ret=read(sock_conn,peticion, sizeof(peticion));
-			printf("recibida una peticion\n");
-			peticion[ret]= '\0';
-			write(1, "Missatge rebut\n",16);
-			write(1,peticion,strlen(peticion));
-			
-			//Dividimeos el texto para saber el codigo
-			//1:
-			char *p = strtok(peticion, "/");
-			int codigo = atoi(p);
-
-			printf("\n Codigo: %d\n",codigo);
-			
-			respuesta[512] = NULL;
-			//nos metemos en la BASEDATOS
-			int err = mysql_query(conn,"use BET365");
-			MYSQL_RES *resultado;
-			MYSQL_ROW row;
-			if (codigo == 0)
-				terminar = 1;
-			//devuelve la edad
-			if(codigo == 1)
-			{
-				p = strtok(NULL,"/");
-				char nombre[200];
-				strcpy(nombre,p);
-				
-				
-				err = mysql_query(conn,"SELECT * FROM Jugadores");
-				resultado = mysql_store_result(conn);
-				row = mysql_fetch_row(resultado);  
-				while(row!=NULL)
-				{
-					if(strcmp( row[1], nombre) == 0)
-					{
-						strcpy(respuesta, row[2]);
-					}
-					row = mysql_fetch_row(resultado);
-				}
-			}
-			//devuele los años ganados
-			else if (codigo == 2)
-			{
-				//2:
-				p = strtok(NULL,"/");
-				char nombre[200];
-				strcpy(nombre,p);
-				
-				
-				err = mysql_query(conn,"SELECT * FROM Partidas");
-
-				resultado =mysql_store_result(conn);
-				row = mysql_fetch_row(resultado);
-				while(row != NULL)
-				{
-					if(strcmp(row[1], nombre) == 0)
-					{
-						sprintf(respuesta,"%s%s/",respuesta,row[2]);
-					}
-					row = mysql_fetch_row(resultado);
-				}
-			}
-			//devuelve la contraseña
-			else if (codigo == 3)
-			{
-				//2:
-				p = strtok(NULL,"/");
-				char nombre[200];
-				strcpy(nombre,p);
-				
-				
-				char consulta[80];
-				int err=mysql_query(conn,"use BET365;");
-				sprintf(consulta,"SELECT Contrasena FROM (Contrasenas,Jugadores) WHERE Jugadores.Id = Contrasenas.ID AND Jugadores.Nombre = '%s';", nombre);
-				err = mysql_query(conn,consulta);
-				resultado = mysql_store_result(conn);
-				row = mysql_fetch_row(resultado);
-				strcpy(respuesta,row[0]);
-			}
-			else if (codigo == 4)
-			{
-				//1:
-				p = strtok(NULL,"/");
-				char nombre[200];
-				strcpy(nombre,p);
-				
-				//2:
-				p = strtok(NULL,"/");
-				int Edad;
-				Edad = atoi(p);
-				
-				//3:
-				p = strtok(NULL,"/");
-				char contrasena[20];
-				strcpy(contrasena,p);
-			
-				char anadir[500];
-				
-				
-				
-				int err=mysql_query(conn,"use BET365;");
-				sprintf(anadir,"INSERT INTO Jugadores(Nombre,Edad,Victorias) VALUES ('%s',%d,0);", nombre,Edad);
-				err = mysql_query(conn,anadir);
-				sprintf(anadir,"INSERT INTO Contrasenas(Contrasena) VALUES ('%s');", contrasena);
-				err = mysql_query(conn,anadir);
-				if (err!=0) 
-					strcpy(respuesta, "No");
-				else
-					strcpy(respuesta, "Si");
-			}
-			if(codigo != 0)
-			{
-				//envia la peticion de vuelta
-				printf("la respuesta es %s\n",respuesta);
-				write(sock_conn,respuesta,strlen(respuesta));
-			}
-		}
-		close(sock_conn); /* Necessari per a que el client detecti EOF */
+		printf("Conexion recibida\n");
+		sockets[i] = sock_conn;
+		pthread_create(&thread[i],NULL,AtenderCliente,&sockets[i]);
+		
 	}
 	return 0;
 }

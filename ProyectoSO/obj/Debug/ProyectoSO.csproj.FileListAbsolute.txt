@@ -8,3 +8,23 @@ C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\Pro
 C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.csproj.CoreCompileInputs.cache
 C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.exe
 C:\Users\DENNIS\Desktop\UNI\2B\SO\ProyectoSO\ProyectoSO\ProyectoSO\obj\Debug\ProyectoSO.pdb
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\bin\Debug\ProyectoSO.exe.config
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\bin\Debug\ProyectoSO.exe
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\bin\Debug\ProyectoSO.pdb
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.csproj.AssemblyReference.cache
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.Form1.resources
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.Properties.Resources.resources
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.csproj.GenerateResource.cache
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.csproj.CoreCompileInputs.cache
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.exe
+C:\Users\raulb\OneDrive\Escritorio\Nueva carpeta\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.pdb
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\bin\Debug\ProyectoSO.exe.config
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\bin\Debug\ProyectoSO.exe
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\bin\Debug\ProyectoSO.pdb
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.csproj.AssemblyReference.cache
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.Form1.resources
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.Properties.Resources.resources
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.csproj.GenerateResource.cache
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.csproj.CoreCompileInputs.cache
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.exe
+C:\Users\raulb\OneDrive\Escritorio\SO\ProyectoSOJuego\ProyectoSO\obj\Debug\ProyectoSO.pdb

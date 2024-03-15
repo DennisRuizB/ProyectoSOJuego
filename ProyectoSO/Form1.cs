@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 
 namespace ProyectoSO
@@ -15,9 +16,11 @@ namespace ProyectoSO
     public partial class Form1 : Form
     {
         Socket server;
+        bool conn = false;
         public Form1()
         {
             InitializeComponent();
+            groupBox3.Dock = DockStyle.Fill;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -25,7 +28,7 @@ namespace ProyectoSO
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
             IPAddress direc = IPAddress.Parse("192.168.56.102");
-            IPEndPoint ipep = new IPEndPoint(direc, 9055);
+            IPEndPoint ipep = new IPEndPoint(direc, 9075);
 
 
             //Creamos el socket 
@@ -33,6 +36,7 @@ namespace ProyectoSO
             try
             {
                 server.Connect(ipep);//Intentamos conectar el socket
+                conn = true;
                 this.BackColor = Color.Green;
                 MessageBox.Show("Conectado");
 
@@ -63,8 +67,9 @@ namespace ProyectoSO
             server.Shutdown(SocketShutdown.Both);
             server.Close();
 
-        }
+            groupBox3.Visible = true;
 
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             if (Edad.Checked)
@@ -126,13 +131,39 @@ namespace ProyectoSO
                 byte[] msg2 = new byte[80];
                 server.Receive(msg2);
                 mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                MessageBox.Show("Registrado con exito");
+                if (mensaje == "Si")
+                    MessageBox.Show("Registrado con exito");
+                else
+                    MessageBox.Show("Error al registrarse");
             }
             else
                 MessageBox.Show("Introduce todos los datos antes de enviar");
 
 
 
+        }
+
+        private void Butt_Login_Click(object sender, EventArgs e)
+        {
+            if(conn == true)
+            {
+                string mensaje = "5/" + NombreLogin.Text + "/" + ContrasenaLogin.Text;
+                // Enviamos al servidor el nombre tecleado
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
+
+                //Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                if (mensaje == "Si es el usuario")
+                    groupBox3.Visible = false;
+                else
+                    MessageBox.Show("Igual si pones bien la contraseña. ¿Has puesto las mayusculas bien?. Si no create otra cuenta crack.");
+
+            }
+            else
+                MessageBox.Show("No ha sido posible la conexion entre usted (cliente) y nuestros servicios (Servidor) le pedimos disculpas de antemano por dicho suceso, disculpa las molestias y con Dios.","Sentimos las molestias", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }
